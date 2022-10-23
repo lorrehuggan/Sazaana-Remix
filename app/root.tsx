@@ -21,7 +21,7 @@ export function links() {
 
 export default function App() {
   return (
-    <html lang="en" className="bg-slate-50 text-slate-700">
+    <html lang="en" className="bg-zinc-900 text-zinc-50">
       <head>
         <Meta />
         <Links />
