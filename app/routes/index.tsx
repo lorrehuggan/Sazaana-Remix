@@ -7,7 +7,8 @@ import type { MetaFunction, ActionFunction } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import { spotifyApi } from "~/utils/spotify";
 import { searchSchema } from "../utils/formValidation";
-import { ZodError } from "zod";
+import z, { ZodError } from "zod";
+import { useState } from "react";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -21,12 +22,19 @@ export const action: ActionFunction = async ({ request }) => {
     // Get the search query from the request body
     const _formData = await request.formData();
     const body = Object.fromEntries(_formData);
-    const formData = searchSchema.parse(body);
+    const formData = searchSchema.safeParse(body);
+
+    /* If the form data is not valid, it throws an error. */
+    if (!formData.success) {
+      throw new ZodError(formData.error.issues);
+    }
 
     //Spotify API call
     const client = await spotifyApi.clientCredentialsGrant();
     spotifyApi.setAccessToken(client.body.access_token);
-    const response = await spotifyApi.searchTracks(`artist:${formData.search}`);
+    const response = await spotifyApi.searchTracks(
+      `artist:${formData.data.search}`
+    );
     const data = response.body;
 
     //Get all artist IDs
@@ -34,7 +42,7 @@ export const action: ActionFunction = async ({ request }) => {
       artistIDs = data.tracks.items.map((item) => item.artists[0].id);
     }
 
-    // filter out duplicate artist IDs
+    //filter out duplicate artist IDs
     artistIDs = artistIDs.filter(
       (id, index) => artistIDs.indexOf(id) === index
     );
@@ -49,21 +57,30 @@ export const action: ActionFunction = async ({ request }) => {
         })
     );
 
-    return json(artistDetails, { status: 200 });
+    return json({ success: true, data: artistDetails, error: null });
   } catch (error) {
     if (error instanceof ZodError) {
       return json({
-        response: null,
+        success: false,
+        data: null,
         error: error.flatten().fieldErrors,
-        status: 400,
       });
     }
-    return json({ formData: null, error: error, status: 500 });
+    return json({ data: null, error: error, status: 500 });
   }
 };
 
 export default function Index() {
-  const data = useActionData<SpotifyApi.SingleArtistResponse[]>();
+  const [error, setError] = useState(null);
+  const [data, setData] = useState<SpotifyApi.SingleArtistResponse[] | null>(
+    null
+  );
+
+  const searchData = useActionData<{
+    success: boolean;
+    data: SpotifyApi.SingleArtistResponse[] | null;
+    error: { search: string[] };
+  }>();
 
   return (
     <>
@@ -71,7 +88,10 @@ export default function Index() {
       <main className="min-h-[calc(100vh-6.5rem)]">
         <Heading />
         <Input />
-        {data && data.map((artist) => <div key={artist.id}>{artist.name}</div>)}
+        {searchData?.success === false &&
+          JSON.stringify(searchData.error.search[0], null, 2)}
+        {searchData?.success === true &&
+          JSON.stringify(searchData?.data, null, 2)}
       </main>
       <Footer />
     </>

@@ -1,5 +1,6 @@
 import z from "zod";
 
+/* Creating a schema for the search input. */
 export const searchSchema = z.object({
   search: z
     .string({
@@ -13,15 +14,3 @@ export const searchSchema = z.object({
 });
 
 export type SearchSchema = z.infer<typeof searchSchema>;
-
-export async function searchValidation(request: Request) {
-  const formData = await request.formData();
-  const search = await formData.get("s");
-  const body = Object.fromEntries(formData.entries());
-  try {
-    const _formData = searchSchema.parse(body);
-    return { formData: _formData, search, error: null };
-  } catch (error) {
-    return { formData: null, error };
-  }
-}

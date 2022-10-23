@@ -1,8 +1,7 @@
 import React from "react";
 import Button from "../ui/Button";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { Form, useLoaderData } from "@remix-run/react";
-import type { ActionArgs, ActionFunction } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 
 const Input: React.FC = () => {
   return (
@@ -16,6 +15,7 @@ const Input: React.FC = () => {
         className=" flex-1 bg-zinc-900 focus:outline-none"
         placeholder="Search Artist"
       />
+
       <Button type="submit" theme="primary-outline" size="small" title="Search">
         <MagnifyingGlassIcon className="h-5 w-5" />
       </Button>
