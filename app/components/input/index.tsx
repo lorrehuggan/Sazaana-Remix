@@ -2,7 +2,12 @@ import React, { useEffect, useRef } from "react";
 import Button from "../ui/Button";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { useFetcher } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useFetcher,
+  useTransition,
+} from "@remix-run/react";
 import DropDown from "../dropdown";
 
 type ActionData = {
@@ -12,8 +17,9 @@ type ActionData = {
 };
 
 const Input: React.FC = () => {
-  const fetcher = useFetcher<ActionData>();
-  const isSearching = fetcher.submission;
+  const data = useActionData<ActionData>();
+  const transition = useTransition();
+  const isSearching = transition.submission;
   const formRef = useRef<HTMLFormElement>(null);
 
   /* Resetting the form when the user submits the form. */
@@ -25,10 +31,11 @@ const Input: React.FC = () => {
 
   return (
     <>
-      <fetcher.Form
+      <Form
         ref={formRef}
         className="mt-8 flex w-full justify-between border-b-2 pb-2 "
         method="post"
+        action="?index"
       >
         <input
           alt="Search"
@@ -39,7 +46,7 @@ const Input: React.FC = () => {
           placeholder="Search Artist"
         />
         <Button
-          state={fetcher.state}
+          state={transition.state}
           type="submit"
           theme="primary-outline"
           size="small"
@@ -47,14 +54,14 @@ const Input: React.FC = () => {
         >
           <MagnifyingGlassIcon className="h-5 w-5" />
         </Button>
-      </fetcher.Form>
-      {fetcher.data?.error && (
+      </Form>
+      {data?.error && (
         <div className="mt-2 flex items-center gap-1 text-sm text-amber-500">
           <ExclamationCircleIcon className="h-5 w-5" />
-          <p>{fetcher.data.error.artist}</p>
+          <p>{data.error.artist}</p>
         </div>
       )}
-      {fetcher.data && <DropDown artists={fetcher.data.data} />}
+      {data?.data && <DropDown artists={data.data} />}
     </>
   );
 };
