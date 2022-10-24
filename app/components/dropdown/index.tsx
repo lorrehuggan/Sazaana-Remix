@@ -18,7 +18,7 @@ const DropDown: React.FC<Props> = ({ artists }) => {
           />
           <Link
             className="text-sm font-bold transition-colors duration-200  ease-in-out hover:text-emerald-400"
-            to={artist.id}
+            to={`${artist.id}`}
           >
             {artist.name}
           </Link>

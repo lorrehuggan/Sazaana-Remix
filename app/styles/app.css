@@ -640,16 +640,16 @@ video {
   border-width: 1px;
 }
 
-.border-b-2 {
-  border-bottom-width: 2px;
+.border-b {
+  border-bottom-width: 1px;
 }
 
 .border-t {
   border-top-width: 1px;
 }
 
-.border-b {
-  border-bottom-width: 1px;
+.border-b-2 {
+  border-bottom-width: 2px;
 }
 
 .bg-zinc-900 {

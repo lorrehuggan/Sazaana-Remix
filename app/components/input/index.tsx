@@ -39,7 +39,7 @@ const Input: React.FC<Props> = ({ action }) => {
         ref={formRef}
         className="mt-8 flex w-full justify-between border-b-2 pb-2 "
         method="post"
-        action={action ? action : "?index"}
+        action={"/search"}
       >
         <input
           alt="Search"

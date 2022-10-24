@@ -1,9 +1,5 @@
-import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
-import { Link } from "@remix-run/react";
 import Footer from "~/components/footer";
-import Heading from "~/components/heading";
 import Nav from "~/components/navigation";
-import Button from "~/components/ui/Button";
 import type { LoaderFunction, TypedResponse } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -121,33 +117,7 @@ export default function Index() {
 
   return (
     <>
-      <Nav />
       <main className="min-h-[calc(100vh-6.5rem)]">
-        <Heading />
-        <div className="mt-8 flex w-full justify-between border-b pb-2 ">
-          {data?.originalQuery && (
-            <div className="flex items-center gap-1">
-              <img
-                src={data?.originalQuery.image}
-                alt={data?.originalQuery.name}
-                className="h-10 w-10 rounded object-cover"
-              />
-              <p className="truncate text-xl font-bold">
-                {data && `${data.originalQuery.name}`}
-              </p>
-            </div>
-          )}
-          <Link to="..">
-            <Button
-              type="submit"
-              theme="primary-outline"
-              size="small"
-              title="Search"
-            >
-              <ArrowUturnLeftIcon className="h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
         {data &&
           data.relatedItems.map((item) => (
             <div key={item.track.id}>{item.track.artists[0].name}</div>
