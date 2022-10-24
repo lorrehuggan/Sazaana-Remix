@@ -16,7 +16,11 @@ type ActionData = {
   error: { artist: string[] } | null;
 };
 
-const Input: React.FC = () => {
+interface Props {
+  action?: string;
+}
+
+const Input: React.FC<Props> = ({ action }) => {
   const data = useActionData<ActionData>();
   const transition = useTransition();
   const isSearching = transition.submission;
@@ -35,7 +39,7 @@ const Input: React.FC = () => {
         ref={formRef}
         className="mt-8 flex w-full justify-between border-b-2 pb-2 "
         method="post"
-        action="?index"
+        action={action ? action : "?index"}
       >
         <input
           alt="Search"
