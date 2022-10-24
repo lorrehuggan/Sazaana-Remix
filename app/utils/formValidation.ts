@@ -2,7 +2,7 @@ import z from "zod";
 
 /* Creating a schema for the search input. */
 export const searchSchema = z.object({
-  search: z
+  artist: z
     .string({
       required_error: "Artist name is required",
       invalid_type_error: "Invalid input type",

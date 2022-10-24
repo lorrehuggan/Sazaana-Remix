@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { ArrowPathIcon } from "@heroicons/react/24/solid/";
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -8,6 +9,7 @@ interface ButtonProps {
   theme: "primary" | "secondary" | "tertiary" | "primary-outline";
   size: "small" | "medium" | "large";
   type?: "button" | "submit" | "reset";
+  state?: "idle" | "loading" | "success" | "error" | "submitting";
 }
 const Button: React.FC<ButtonProps> = ({
   children,
@@ -16,15 +18,21 @@ const Button: React.FC<ButtonProps> = ({
   theme,
   size,
   type,
+  state,
 }) => {
   return (
     <button
+      aria-label="click to search artist"
+      aria-hidden={state === "submitting"}
+      disabled={state === "submitting" || state === "loading"}
       type={type}
       onClick={onClick}
-      className={clsx("transition-c rounded-sm px-3 py-1", {
+      className={clsx("transition-c rounded-sm px-3 py-1 transition-opacity ", {
         "text-xs": size === "small",
         "text-sm": size === "medium",
         "text-lg": size === "large",
+        "cursor-not-allowed opacity-50":
+          state === "submitting" || state === "loading",
         "bg-zinc-300 text-zinc-900 hover:bg-zinc-500": theme === "primary",
         "border-[1px]  hover:border-emerald-500 hover:bg-emerald-500":
           theme === "primary-outline",
@@ -33,7 +41,13 @@ const Button: React.FC<ButtonProps> = ({
           theme === "tertiary",
       })}
     >
-      {children ? children : title}
+      {state === "submitting" || state === "loading" ? (
+        <ArrowPathIcon className="h-5 w-5 animate-spin" />
+      ) : children ? (
+        children
+      ) : (
+        title
+      )}
     </button>
   );
 };
