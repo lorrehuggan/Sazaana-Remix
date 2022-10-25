@@ -11,12 +11,18 @@ import {
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "Sazaana",
   viewport: "width=device-width,initial-scale=1",
 });
 
 export function links() {
-  return [{ rel: "stylesheet", href: styles }];
+  return [
+    { rel: "stylesheet", href: styles },
+    {
+      rel: "preconnect",
+      href: "https://fonts.googleapis.com/css2?family=Hanuman:wght@300;400;700;900&family=Hind+Vadodara:wght@300;400;500;600;700&family=Inter:wght@100;300;400;500;700;900&display=swap",
+    },
+  ];
 }
 
 export default function App() {
