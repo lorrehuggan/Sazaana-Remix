@@ -1,15 +1,14 @@
 import type { LoaderFunction, TypedResponse } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { spotifyApi } from "~/utils/spotify";
 import { intToString, randomizeArray } from "~/utils";
 import Song from "~/components/song";
 import { mydata } from "../../utils/data";
-import { HeartIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 import OriginalQuery from "~/components/originalQuery";
 import Filter from "~/components/filter";
 import useTracklistStore from "~/utils/appStore/trackListStore";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export interface LoaderData {
   success: boolean;
@@ -137,10 +136,10 @@ export default function Index() {
     <>
       <section className="py-6">
         {error && <p className="text-sm text-amber-500">{error}</p>}
-        <div className="relative">
-          {data?.originalQuery && <OriginalQuery data={data} />}
+        {data?.originalQuery && <OriginalQuery data={data} />}
+        <div className=" md:flex md:gap-4">
           <Filter />
-          <div className="space-y-4">
+          <div className="flex-1 space-y-4">
             {tracklist &&
               tracklist
                 .slice(0, maxNumOfTracks)

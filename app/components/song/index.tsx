@@ -27,13 +27,13 @@ export default Song;
 const SongDetails: React.FC<Props> = ({ song }) => {
   return (
     <div className="flex w-full flex-col justify-end overflow-x-hidden border-b border-zinc-800 pb-1">
-      <Link to={song.external_urls.spotify}>
+      <a href={song.external_urls.spotify}>
         <p className="truncate font-bold">{song.name}</p>
-      </Link>
+      </a>
       <div className="flex overflow-hidden truncate ">
         {song.artists.slice(0, 20).map((artist, i) => {
           return (
-            <Link key={i} to={`/search/${song.id}`}>
+            <Link key={i} to={`/search/${artist.id}`}>
               <span className="mr-1 cursor-pointer truncate text-clip text-xs">
                 {i < song.artists.length - 1 ? artist.name + ", " : artist.name}
               </span>

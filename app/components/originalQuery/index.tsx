@@ -10,7 +10,7 @@ interface Props {
 
 const OriginalQuery: React.FC<Props> = ({ data }) => {
   return (
-    <div className="sticky top-5 mb-6 flex items-center justify-between gap-2 rounded bg-gradient-to-b from-zinc-800 to-zinc-900 p-2 opacity-90">
+    <div className="sticky top-5 z-50 mb-6 flex items-center justify-between gap-2 rounded bg-gradient-to-b from-zinc-800 to-zinc-900 p-2 opacity-90">
       <div className="flex items-center gap-2">
         <img
           src={data?.originalQuery.image}

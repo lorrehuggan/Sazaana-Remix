@@ -65,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
         error: error.flatten().fieldErrors,
       });
     }
-    return json({ data: null, error: error, status: 500 });
+    return json({ data: null, error: 'Oops looks like something went wrong', status: 500 });
   }
 };
 

@@ -18,52 +18,26 @@ const Filter: React.FC = () => {
     energy,
     tempo,
     valence,
-    setPopularity,
-    setEnergy,
-    setTempo,
-    setDanceability,
-    setAcousticness,
-    setValence,
-    setTracklist,
-    tracklist,
+
     maxNumOfTracks,
   } = useTracklistStore((state) => state);
 
   useEffect(() => {
     if (isOpen) {
       setDropDownHeight(menu.current?.scrollHeight || 0);
-      // if (
-      //   popularity > 0 ||
-      //   energy > 0 ||
-      //   tempo > 0 ||
-      //   danceability > 0 ||
-      //   acousticness > 0 ||
-      //   valence > 0
-      // ) {
-      //   if (tracklist) {
-      //     const filteredTracklist = tracklist
-      //       .slice(0, maxNumOfTracks)
-      //       .filter((track) => {
-      //         return (
-      //           track.track.popularity >= popularity &&
-      //           track.features.energy >= energy &&
-      //           track.features.tempo >= tempo &&
-      //           track.features.danceability >= danceability &&
-      //           track.features.acousticness >= acousticness &&
-      //           track.features.valence >= valence
-      //         );
-      //       });
-      //     setTracklist(filteredTracklist);
-      //   }
-      // } else {
-      //   setTracklist(tracklist.slice(0, maxNumOfTracks));
-      // }
     }
   }, [isOpen]);
 
   return (
-    <div className="mb-6 w-full rounded bg-zinc-200 p-2 text-zinc-900">
-      <div className="flex items-center justify-between">
+    <div className="mb-6 w-full rounded  p-2  text-zinc-900 md:w-80 ">
+      <div
+        className={clsx(
+          "flex transform items-center justify-between rounded-t-md bg-zinc-200 p-2 duration-100 ease-in-out",
+          {
+            "rounded-b-md": !isOpen,
+          }
+        )}
+      >
         <p className="font-bold">Filter Tracklist</p>
         <AdjustmentsHorizontalIcon
           onClick={() => {
@@ -76,11 +50,14 @@ const Filter: React.FC = () => {
         />
       </div>
       <div
-        style={{ height: isOpen ? dropDownHeight : 0 }}
-        className={clsx("transform  rounded duration-300 ease-out", {
-          "mt-2": isOpen,
-          "mt-0": !isOpen,
-        })}
+        style={{ height: isOpen ? dropDownHeight + 10 : 0 }}
+        className={clsx(
+          "transform rounded-b-md bg-zinc-200 duration-300 ease-out",
+          {
+            " p-2 pb-2": isOpen,
+            "mt-0": !isOpen,
+          }
+        )}
       >
         <div
           ref={menu}
