@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+let plugin = require("tailwindcss/plugin");
 const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: ["./app/**/*.{js,ts,jsx,tsx}"],
@@ -11,5 +12,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-radix")()],
 };

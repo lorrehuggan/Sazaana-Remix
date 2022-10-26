@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
         href="https://twitter.com/lorrehuggan"
       >
         <TwitterLogoIcon className="h-4 w-4" />
-        <span>@lorrehuggan</span>
+        <span>lorrehuggan</span>
       </a>
     </footer>
   );

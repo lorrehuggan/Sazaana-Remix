@@ -1,10 +1,15 @@
 import type { LoaderFunction, TypedResponse } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { spotifyApi } from "~/utils/spotify";
-import { randomizeArray } from "~/utils";
+import { intToString, randomizeArray } from "~/utils";
 import Song from "~/components/song";
 import { mydata } from "../../utils/data";
+import { HeartIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
+import OriginalQuery from "~/components/originalQuery";
+import Filter from "~/components/filter";
+import useTracklistStore from "~/utils/appStore/trackListStore";
+import { useEffect } from "react";
 
 export interface LoaderData {
   success: boolean;
@@ -116,16 +121,31 @@ export const loader: LoaderFunction = async ({
 
 export default function Index() {
   const { data, error } = useLoaderData<LoaderData>();
+  const { setTracklist, tracklist, maxNumOfTracks, setShadowTracklist } =
+    useTracklistStore((state) => state);
+
+  useEffect(() => {
+    if (data?.relatedItems) {
+      setTracklist(data.relatedItems);
+      setShadowTracklist(data.relatedItems);
+    } else {
+      return setTracklist([]);
+    }
+  }, [setTracklist, data, setShadowTracklist]);
 
   return (
     <>
-      <section className=" py-6">
+      <section className="py-6">
         {error && <p className="text-sm text-amber-500">{error}</p>}
-        <div className="space-y-4">
-          {data &&
-            data.relatedItems.map((item) => (
-              <Song song={item.track} key={item.track.id} />
-            ))}
+        <div className="relative">
+          {data?.originalQuery && <OriginalQuery data={data} />}
+          <Filter />
+          <div className="space-y-4">
+            {tracklist &&
+              tracklist
+                .slice(0, maxNumOfTracks)
+                .map((item) => <Song song={item.track} key={item.track.id} />)}
+          </div>
         </div>
       </section>
     </>

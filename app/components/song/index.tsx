@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 import React from "react";
 import { Howl, Howler } from "howler";
 import * as Progress from "@radix-ui/react-progress";
-import useAudioStore from "../../utils/audioStore";
+import useAudioStore from "../../utils/appStore/audioStore";
 
 interface Props {
   song: SpotifyApi.TrackObjectFull;
@@ -29,16 +29,18 @@ const SongDetails: React.FC<Props> = ({ song }) => {
     <div className="flex w-full flex-col justify-end overflow-x-hidden border-b border-zinc-800 pb-1">
       <Link to={song.external_urls.spotify}>
         <p className="truncate font-bold">{song.name}</p>
+      </Link>
+      <div className="flex overflow-hidden truncate ">
         {song.artists.slice(0, 20).map((artist, i) => {
           return (
-            <Link key={i} to={artist.external_urls.spotify}>
+            <Link key={i} to={`/search/${song.id}`}>
               <span className="mr-1 cursor-pointer truncate text-clip text-xs">
                 {i < song.artists.length - 1 ? artist.name + ", " : artist.name}
               </span>
             </Link>
           );
         })}
-      </Link>
+      </div>
     </div>
   );
 };
