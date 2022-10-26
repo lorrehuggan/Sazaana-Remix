@@ -29,7 +29,7 @@ const OriginalQuery: React.FC<Props> = ({ data }) => {
         <div></div>
       </div>
       <Link to="/search">
-        <ArrowUturnLeftIcon className="h-6 w-6" />
+        <ArrowUturnLeftIcon className="h-6 w-6 hover:fill-emerald-300" />
       </Link>
     </div>
   );

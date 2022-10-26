@@ -1,8 +1,5 @@
 import React, { useEffect, useMemo, useRef } from "react";
-import {
-  AdjustmentsHorizontalIcon,
-  ChevronDoubleDownIcon,
-} from "@heroicons/react/24/solid";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import * as Slider from "@radix-ui/react-slider";
 import useTracklistStore from "~/utils/appStore/trackListStore";
@@ -29,111 +26,113 @@ const Filter: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <div className="mb-6 w-full rounded  p-2  text-zinc-50 md:w-80 ">
-      <div
-        className={clsx(
-          "flex transform items-center justify-between rounded-t-md bg-zinc-800 p-2 duration-100 ease-in-out",
-          {
-            "rounded-b-md": !isOpen,
-          }
-        )}
-      >
-        <p className="font-bold">Filter Tracklist</p>
-        <AdjustmentsHorizontalIcon
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}
-          className={clsx("h-6 w-6 cursor-pointer", {
-            "rotate-180 transform": isOpen,
-            "rotate-0 transform": !isOpen,
-          })}
-        />
-      </div>
-      <div
-        style={{ height: isOpen ? dropDownHeight + 16 : 0 }}
-        className={clsx(
-          "transform rounded-b-md bg-zinc-800 duration-300 ease-out",
-          {
-            "px-2": isOpen,
-            "": !isOpen,
-          }
-        )}
-      >
+    <div className="mb-6 w-full rounded text-zinc-50 md:relative md:w-80 ">
+      <div className="md:sticky md:top-24 md:z-50">
         <div
-          ref={menu}
-          className={clsx("p-y  space-y-2 ", {
-            "opacity-0": !isOpen,
-            "opacity-100": isOpen,
-          })}
+          className={clsx(
+            "flex transform items-center justify-between rounded-t-md bg-zinc-800 p-2 duration-100 ease-in-out ",
+            {
+              "rounded-b-md": !isOpen,
+            }
+          )}
         >
-          <form className=" space-y-4">
-            <Input
-              {...{
-                label: "popularity",
-                low: "playing at bars",
-                high: "playing in stadiums",
-                step: 10,
-                min: 0,
-                max: 100,
-                initialValue: popularity,
-              }}
-            />
-            <Input
-              {...{
-                label: "danceability",
-                low: "cocktail party",
-                high: "summer festival",
-                step: 0.1,
-                min: 0,
-                max: 1,
-                initialValue: danceability,
-              }}
-            />
-            <Input
-              {...{
-                label: "energy",
-                low: "library visit",
-                high: "super bowl halftime show",
-                step: 0.1,
-                min: 0,
-                max: 1,
-                initialValue: energy,
-              }}
-            />
-            <Input
-              {...{
-                label: "mood",
-                low: "single on a rainy day",
-                high: "dancing with your crush",
-                step: 0.1,
-                min: 0,
-                max: 1,
-                initialValue: valence,
-              }}
-            />
-            <Input
-              {...{
-                label: "tempo",
-                low: "slow and steady",
-                high: "fast and furious",
-                min: 0,
-                max: 200,
-                step: 10,
-                initialValue: tempo,
-              }}
-            />
-            <Input
-              {...{
-                label: "acousticness",
-                low: "made with a computer",
-                high: "made with a guitar",
-                min: 0,
-                max: 1,
-                step: 0.1,
-                initialValue: acousticness,
-              }}
-            />
-          </form>
+          <p className="font-bold">Filter Tracklist</p>
+          <AdjustmentsHorizontalIcon
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+            className={clsx("h-6 w-6 cursor-pointer", {
+              "rotate-180 transform": isOpen,
+              "rotate-0 transform": !isOpen,
+            })}
+          />
+        </div>
+        <div
+          style={{ height: isOpen ? dropDownHeight + 16 : 0 }}
+          className={clsx(
+            "transform rounded-b-md bg-zinc-800 duration-300 ease-out",
+            {
+              "px-2": isOpen,
+              "": !isOpen,
+            }
+          )}
+        >
+          <div
+            ref={menu}
+            className={clsx("p-y  space-y-2 ", {
+              "opacity-0": !isOpen,
+              "opacity-100": isOpen,
+            })}
+          >
+            <form className=" space-y-4">
+              <Input
+                {...{
+                  label: "popularity",
+                  low: "playing at bars",
+                  high: "playing in stadiums",
+                  step: 10,
+                  min: 0,
+                  max: 100,
+                  initialValue: popularity,
+                }}
+              />
+              <Input
+                {...{
+                  label: "danceability",
+                  low: "cocktail party",
+                  high: "summer festival",
+                  step: 0.1,
+                  min: 0,
+                  max: 1,
+                  initialValue: danceability,
+                }}
+              />
+              <Input
+                {...{
+                  label: "energy",
+                  low: "library visit",
+                  high: "super bowl halftime show",
+                  step: 0.1,
+                  min: 0,
+                  max: 1,
+                  initialValue: energy,
+                }}
+              />
+              <Input
+                {...{
+                  label: "mood",
+                  low: "single on a rainy day",
+                  high: "dancing with your crush",
+                  step: 0.1,
+                  min: 0,
+                  max: 1,
+                  initialValue: valence,
+                }}
+              />
+              <Input
+                {...{
+                  label: "tempo",
+                  low: "slow and steady",
+                  high: "fast and furious",
+                  min: 0,
+                  max: 200,
+                  step: 10,
+                  initialValue: tempo,
+                }}
+              />
+              <Input
+                {...{
+                  label: "acousticness",
+                  low: "made with a computer",
+                  high: "made with a guitar",
+                  min: 0,
+                  max: 1,
+                  step: 0.1,
+                  initialValue: acousticness,
+                }}
+              />
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -268,11 +267,11 @@ const Input: React.FC<InputProps> = ({
         step={step}
         className="relative flex w-full items-center bg-zinc-800 radix-orientation-horizontal:h-2"
       >
-        <Slider.Track className="relative grow rounded-full bg-zinc-700 radix-orientation-horizontal:h-2">
-          <Slider.Range className="absolute h-full rounded-full bg-emerald-300" />
+        <Slider.Track className="relative grow rounded-full bg-gradient-to-r from-emerald-200 via-emerald-600 to-teal-800 radix-orientation-horizontal:h-1">
+          <Slider.Range className="absolute h-full rounded-full bg-zinc-200" />
         </Slider.Track>
-        <Slider.Thumb className=" block h-4 w-4 cursor-pointer rounded-full bg-zinc-50 shadow-lg active:cursor-grabbing" />
-        <Slider.Thumb className=" block h-4 w-4 cursor-pointer rounded-full bg-zinc-50 shadow-lg active:cursor-grabbing" />
+        <Slider.Thumb className=" block h-4 w-4 cursor-grab rounded-full bg-zinc-50 shadow-md focus:cursor-grabbing " />
+        <Slider.Thumb className=" block h-4 w-4 cursor-grab rounded-full bg-zinc-50 focus:cursor-grabbing   " />
       </Slider.Root>
       <div className="flex items-center justify-between">
         <p className="text-xs capitalize">{low}</p>
