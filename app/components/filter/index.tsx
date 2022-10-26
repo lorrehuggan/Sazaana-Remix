@@ -149,7 +149,7 @@ interface InputProps {
   min: number;
   max: number;
   step: number;
-  initialValue: number;
+  initialValue: number[];
 }
 
 const Input: React.FC<InputProps> = ({
@@ -181,15 +181,16 @@ const Input: React.FC<InputProps> = ({
     setTracklist,
   } = useTracklistStore((state) => state);
 
-  function update(e: number) {
-    setValue(e);
+  function update(e: number[]) {
     switch (label) {
       case "popularity":
         setPopularity(e);
         let po = shadowTracklist.filter((track) => {
-          return track.track.popularity >= e;
+          return (
+            track.track.popularity >= e[0] && track.track.popularity <= e[1]
+          );
         });
-        if (popularity > 0) {
+        if (popularity[0] > 0 || popularity[1] < 100) {
           setTracklist(po);
         } else {
           setTracklist(shadowTracklist);
@@ -199,9 +200,9 @@ const Input: React.FC<InputProps> = ({
       case "energy":
         setEnergy(e);
         let en = shadowTracklist.filter((track) => {
-          return track.features.energy >= e;
+          return track.features.energy >= e[0] && track.features.energy <= e[1];
         });
-        if (energy > 0) {
+        if (energy[0] > 0 || energy[1] < 1) {
           setTracklist(en);
         } else {
           setTracklist(shadowTracklist);
@@ -210,9 +211,9 @@ const Input: React.FC<InputProps> = ({
       case "tempo":
         setTempo(e);
         let te = shadowTracklist.filter((track) => {
-          return track.features.tempo >= e;
+          return track.features.tempo >= e[0] && track.features.tempo <= e[1];
         });
-        if (tempo > 0) {
+        if (tempo[0] > 0 || tempo[1] < 200) {
           setTracklist(te);
         } else {
           setTracklist(shadowTracklist);
@@ -221,9 +222,12 @@ const Input: React.FC<InputProps> = ({
       case "danceability":
         setDanceability(e);
         let da = shadowTracklist.filter((track) => {
-          return track.features.danceability >= e;
+          return (
+            track.features.danceability >= e[0] &&
+            track.features.danceability <= e[1]
+          );
         });
-        if (danceability > 0) {
+        if (danceability[0] > 0 || danceability[1] < 1) {
           setTracklist(da);
         } else {
           setTracklist(shadowTracklist);
@@ -232,9 +236,11 @@ const Input: React.FC<InputProps> = ({
       case "mood":
         setValence(e);
         let va = shadowTracklist.filter((track) => {
-          return track.features.valence >= e;
+          return (
+            track.features.valence >= e[0] && track.features.valence <= e[1]
+          );
         });
-        if (valence > 0) {
+        if (valence[0] > 0 || valence[1] < 1) {
           setTracklist(va);
         } else {
           setTracklist(shadowTracklist);
@@ -243,9 +249,12 @@ const Input: React.FC<InputProps> = ({
       case "acousticness":
         setAcousticness(e);
         let ac = shadowTracklist.filter((track) => {
-          return track.features.acousticness >= e;
+          return (
+            track.features.acousticness >= e[0] &&
+            track.features.acousticness <= e[1]
+          );
         });
-        if (acousticness > 0) {
+        if (acousticness[0] > 0 || acousticness[1] < 1) {
           setTracklist(ac);
         } else {
           setTracklist(shadowTracklist);
@@ -259,15 +268,12 @@ const Input: React.FC<InputProps> = ({
       <Slider.Root
         aria-label={label}
         name={label}
-        defaultValue={[initialValue]}
+        defaultValue={initialValue}
         onValueChange={(v) => {
-          update(v[0]);
+          setValue(v);
+          update(v);
         }}
-        onValueCommit={(v) => {
-          console.log({
-            value: v,
-          });
-        }}
+        onValueCommit={(v) => {}}
         min={min}
         max={max}
         step={step}
@@ -276,6 +282,7 @@ const Input: React.FC<InputProps> = ({
         <Slider.Track className="relative grow rounded-full bg-zinc-700 radix-orientation-horizontal:h-2">
           <Slider.Range className="absolute h-full rounded-full bg-emerald-300" />
         </Slider.Track>
+        <Slider.Thumb className=" block h-4 w-4 cursor-pointer rounded-full bg-zinc-800 shadow-lg active:cursor-grabbing" />
         <Slider.Thumb className=" block h-4 w-4 cursor-pointer rounded-full bg-zinc-800 shadow-lg active:cursor-grabbing" />
       </Slider.Root>
       <div className="flex items-center justify-between">
