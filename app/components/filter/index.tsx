@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import {
   AdjustmentsHorizontalIcon,
   ChevronDoubleDownIcon,
@@ -167,8 +167,6 @@ const Input: React.FC<InputProps> = ({
     popularity,
     tempo,
     valence,
-    tracklist,
-    setShadowTracklist,
     energy,
     acousticness,
     danceability,
@@ -181,84 +179,75 @@ const Input: React.FC<InputProps> = ({
     setTracklist,
   } = useTracklistStore((state) => state);
 
+  useMemo(() => {
+    if (
+      popularity[0] > 0 ||
+      popularity[1] < 100 ||
+      danceability[0] > 0 ||
+      danceability[1] < 1 ||
+      energy[0] > 0 ||
+      energy[1] < 1 ||
+      valence[0] > 0 ||
+      valence[1] < 1 ||
+      tempo[0] > 0 ||
+      tempo[1] < 200 ||
+      acousticness[0] > 0 ||
+      acousticness[1] < 1
+    ) {
+      let f = shadowTracklist.filter((track) => {
+        return (
+          track.track.popularity >= popularity[0] &&
+          track.track.popularity <= popularity[1] &&
+          track.features.danceability >= danceability[0] &&
+          track.features.danceability <= danceability[1] &&
+          track.features.energy >= energy[0] &&
+          track.features.energy <= energy[1] &&
+          track.features.valence >= valence[0] &&
+          track.features.valence <= valence[1] &&
+          track.features.tempo >= tempo[0] &&
+          track.features.tempo <= tempo[1] &&
+          track.features.acousticness >= acousticness[0] &&
+          track.features.acousticness <= acousticness[1]
+        );
+      });
+      setTracklist(f);
+    }
+  }, [
+    popularity,
+    energy,
+    tempo,
+    danceability,
+    acousticness,
+    valence,
+    setTracklist,
+    shadowTracklist,
+  ]);
+
   function update(e: number[]) {
     switch (label) {
       case "popularity":
         setPopularity(e);
-        let po = shadowTracklist.filter((track) => {
-          return (
-            track.track.popularity >= e[0] && track.track.popularity <= e[1]
-          );
-        });
-        if (popularity[0] > 0 || popularity[1] < 100) {
-          setTracklist(po);
-        } else {
-          setTracklist(shadowTracklist);
-        }
 
         break;
       case "energy":
         setEnergy(e);
-        let en = shadowTracklist.filter((track) => {
-          return track.features.energy >= e[0] && track.features.energy <= e[1];
-        });
-        if (energy[0] > 0 || energy[1] < 1) {
-          setTracklist(en);
-        } else {
-          setTracklist(shadowTracklist);
-        }
+
         break;
       case "tempo":
         setTempo(e);
-        let te = shadowTracklist.filter((track) => {
-          return track.features.tempo >= e[0] && track.features.tempo <= e[1];
-        });
-        if (tempo[0] > 0 || tempo[1] < 200) {
-          setTracklist(te);
-        } else {
-          setTracklist(shadowTracklist);
-        }
+
         break;
       case "danceability":
         setDanceability(e);
-        let da = shadowTracklist.filter((track) => {
-          return (
-            track.features.danceability >= e[0] &&
-            track.features.danceability <= e[1]
-          );
-        });
-        if (danceability[0] > 0 || danceability[1] < 1) {
-          setTracklist(da);
-        } else {
-          setTracklist(shadowTracklist);
-        }
+
         break;
       case "mood":
         setValence(e);
-        let va = shadowTracklist.filter((track) => {
-          return (
-            track.features.valence >= e[0] && track.features.valence <= e[1]
-          );
-        });
-        if (valence[0] > 0 || valence[1] < 1) {
-          setTracklist(va);
-        } else {
-          setTracklist(shadowTracklist);
-        }
+
         break;
       case "acousticness":
         setAcousticness(e);
-        let ac = shadowTracklist.filter((track) => {
-          return (
-            track.features.acousticness >= e[0] &&
-            track.features.acousticness <= e[1]
-          );
-        });
-        if (acousticness[0] > 0 || acousticness[1] < 1) {
-          setTracklist(ac);
-        } else {
-          setTracklist(shadowTracklist);
-        }
+
         break;
     }
   }

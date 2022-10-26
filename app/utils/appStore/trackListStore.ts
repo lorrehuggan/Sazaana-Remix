@@ -1,6 +1,6 @@
 import create from "zustand";
 
-type Track = {
+export type Track = {
   features: SpotifyApi.AudioFeaturesResponse;
   track: SpotifyApi.TrackObjectFull;
 };
