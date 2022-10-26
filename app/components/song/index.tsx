@@ -3,6 +3,7 @@ import React from "react";
 import { Howl, Howler } from "howler";
 import * as Progress from "@radix-ui/react-progress";
 import useAudioStore from "../../utils/appStore/audioStore";
+import { PlayIcon, StopIcon } from "@heroicons/react/24/outline";
 
 interface Props {
   song: SpotifyApi.TrackObjectFull;
@@ -28,13 +29,13 @@ const SongDetails: React.FC<Props> = ({ song }) => {
   return (
     <div className="flex w-full flex-col justify-end overflow-x-hidden border-b border-zinc-800 pb-1">
       <a href={song.external_urls.spotify}>
-        <p className="truncate font-bold">{song.name}</p>
+        <p className="truncate font-bold hover:text-emerald-300">{song.name}</p>
       </a>
       <div className="flex overflow-hidden truncate ">
         {song.artists.slice(0, 20).map((artist, i) => {
           return (
             <Link key={i} to={`/search/${artist.id}`}>
-              <span className="mr-1 cursor-pointer truncate text-clip text-xs">
+              <span className="mr-1 cursor-pointer truncate text-clip text-sm hover:text-amber-400">
                 {i < song.artists.length - 1 ? artist.name + ", " : artist.name}
               </span>
             </Link>
@@ -47,12 +48,14 @@ const SongDetails: React.FC<Props> = ({ song }) => {
 
 const SongPreview: React.FC<Props> = ({ song }) => {
   const [playPosition, setPlayPosition] = React.useState<number>(0);
-  const playing = useAudioStore((state) => state.playing);
-  const setPlaying = useAudioStore((state) => state.setPlaying);
+  const globalPlaying = useAudioStore((state) => state.playing);
+  const setGlobalPlaying = useAudioStore((state) => state.setPlaying);
+  const [localPlaying, setLocalPlaying] = React.useState<boolean>(false);
 
   const stop = () => {
     Howler.stop();
-    setPlaying(false);
+    setLocalPlaying(false);
+    setGlobalPlaying(false);
     previewTrack.stop();
     previewTrack.seek(0);
     setPlayPosition(0);
@@ -66,17 +69,19 @@ const SongPreview: React.FC<Props> = ({ song }) => {
     loop: false,
     volume: 0.5,
     onplay: () => {
-      setPlaying(true);
+      setLocalPlaying(true);
+      setGlobalPlaying(true);
     },
     onend: () => {
       stop();
-      setPlaying(false);
+      setLocalPlaying(false);
+      setGlobalPlaying(false);
     },
   });
 
   const play = () => {
     // If the song is playing, stop it.
-    if (playing) {
+    if (globalPlaying) {
       stop();
       return;
     }
@@ -90,13 +95,13 @@ const SongPreview: React.FC<Props> = ({ song }) => {
   };
 
   return (
-    <div className="flex w-24 flex-col justify-end gap-1 pb-1">
-      <p onClick={play} className="cursor-pointer text-xs">
-        Prev
-      </p>
+    <div className="flex w-24 flex-col justify-end gap-1">
+      <button onClick={play} className="text-sm uppercase">
+        Preview
+      </button>
       <Progress.Root
         value={10}
-        className="h-2 w-full overflow-hidden rounded bg-zinc-800"
+        className="h-[1px] w-full overflow-hidden rounded bg-zinc-800"
       >
         <Progress.Indicator
           className="h-full w-full bg-emerald-500 ease-out"

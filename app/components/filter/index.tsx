@@ -29,10 +29,10 @@ const Filter: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <div className="mb-6 w-full rounded  p-2  text-zinc-900 md:w-80 ">
+    <div className="mb-6 w-full rounded  p-2  text-zinc-50 md:w-80 ">
       <div
         className={clsx(
-          "flex transform items-center justify-between rounded-t-md bg-zinc-200 p-2 duration-100 ease-in-out",
+          "flex transform items-center justify-between rounded-t-md bg-zinc-800 p-2 duration-100 ease-in-out",
           {
             "rounded-b-md": !isOpen,
           }
@@ -50,20 +50,20 @@ const Filter: React.FC = () => {
         />
       </div>
       <div
-        style={{ height: isOpen ? dropDownHeight + 10 : 0 }}
+        style={{ height: isOpen ? dropDownHeight + 16 : 0 }}
         className={clsx(
-          "transform rounded-b-md bg-zinc-200 duration-300 ease-out",
+          "transform rounded-b-md bg-zinc-800 duration-300 ease-out",
           {
-            " p-2 pb-2": isOpen,
-            "mt-0": !isOpen,
+            "px-2": isOpen,
+            "": !isOpen,
           }
         )}
       >
         <div
           ref={menu}
-          className={clsx("p-y transform space-y-2 duration-200 ease-out", {
+          className={clsx("p-y  space-y-2 ", {
             "opacity-0": !isOpen,
-            " opacity-100": isOpen,
+            "opacity-100": isOpen,
           })}
         >
           <form className=" space-y-4">
@@ -263,7 +263,7 @@ const Input: React.FC<InputProps> = ({
     }
   }
   return (
-    <div className="w-full space-y-2 border-b border-zinc-400 pb-2">
+    <div className="w-full space-y-2 border-b border-zinc-400">
       <label className="text-sm font-bold uppercase">{label}</label>
       <Slider.Root
         aria-label={label}
@@ -277,13 +277,13 @@ const Input: React.FC<InputProps> = ({
         min={min}
         max={max}
         step={step}
-        className="relative flex w-full items-center bg-blue-200 radix-orientation-horizontal:h-2"
+        className="relative flex w-full items-center bg-zinc-800 radix-orientation-horizontal:h-2"
       >
         <Slider.Track className="relative grow rounded-full bg-zinc-700 radix-orientation-horizontal:h-2">
           <Slider.Range className="absolute h-full rounded-full bg-emerald-300" />
         </Slider.Track>
-        <Slider.Thumb className=" block h-4 w-4 cursor-pointer rounded-full bg-zinc-800 shadow-lg active:cursor-grabbing" />
-        <Slider.Thumb className=" block h-4 w-4 cursor-pointer rounded-full bg-zinc-800 shadow-lg active:cursor-grabbing" />
+        <Slider.Thumb className=" block h-4 w-4 cursor-pointer rounded-full bg-zinc-50 shadow-lg active:cursor-grabbing" />
+        <Slider.Thumb className=" block h-4 w-4 cursor-pointer rounded-full bg-zinc-50 shadow-lg active:cursor-grabbing" />
       </Slider.Root>
       <div className="flex items-center justify-between">
         <p className="text-xs capitalize">{low}</p>

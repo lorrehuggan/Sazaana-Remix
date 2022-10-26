@@ -23,9 +23,10 @@ const OriginalQuery: React.FC<Props> = ({ data }) => {
             <span className="text-xs">
               {`${intToString(data?.originalQuery.followers!)} `}
             </span>
-            <HeartIcon className="h-4 w-4" />
+            <HeartIcon className="h-4 w-4 fill-rose-300" />
           </div>
         </div>
+        <div></div>
       </div>
       <Link to="/search">
         <ArrowUturnLeftIcon className="h-6 w-6" />

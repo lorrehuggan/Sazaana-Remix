@@ -145,7 +145,7 @@ export default function Index() {
                 .slice(0, maxNumOfTracks)
                 .map((item) => <Song song={item.track} key={item.track.id} />)}
             {tracklist.length < 1 && (
-              <p className="text-xl text-amber-500">No tracks found...</p>
+              <p className="text-xl text-emerald-300">No tracks found...</p>
             )}
           </div>
         </div>
