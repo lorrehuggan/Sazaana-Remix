@@ -27,10 +27,10 @@ const Filter: React.FC = () => {
 
   return (
     <div className="mb-6 w-full rounded text-zinc-50 md:relative md:w-80 ">
-      <div className="md:sticky md:top-24 md:z-50">
+      <div className="md:z-50">
         <div
           className={clsx(
-            "flex transform items-center justify-between rounded-t-md bg-zinc-800 p-2 duration-100 ease-in-out ",
+            "flex transform items-center justify-between rounded-t bg-base-200 p-2 duration-100 ease-in-out ",
             {
               "rounded-b-md": !isOpen,
             }
@@ -49,13 +49,10 @@ const Filter: React.FC = () => {
         </div>
         <div
           style={{ height: isOpen ? dropDownHeight + 16 : 0 }}
-          className={clsx(
-            "transform rounded-b-md bg-zinc-800 duration-300 ease-out",
-            {
-              "px-2": isOpen,
-              "": !isOpen,
-            }
-          )}
+          className={clsx("transform rounded-b-md bg-base-200", {
+            "px-2": isOpen,
+            "": !isOpen,
+          })}
         >
           <div
             ref={menu}
@@ -251,7 +248,7 @@ const Input: React.FC<InputProps> = ({
     }
   }
   return (
-    <div className="w-full space-y-2 border-b border-zinc-400">
+    <div className="w-full space-y-2">
       <label className="text-sm font-bold uppercase">{label}</label>
       <Slider.Root
         aria-label={label}
@@ -265,10 +262,10 @@ const Input: React.FC<InputProps> = ({
         min={min}
         max={max}
         step={step}
-        className="relative flex w-full items-center bg-zinc-800 radix-orientation-horizontal:h-2"
+        className="relative flex w-full items-center bg-zinc-800 radix-orientation-horizontal:h-1"
       >
-        <Slider.Track className="relative grow rounded-full bg-gradient-to-r from-emerald-200 via-emerald-600 to-teal-800 radix-orientation-horizontal:h-1">
-          <Slider.Range className="absolute h-full rounded-full bg-zinc-200" />
+        <Slider.Track className="relative grow rounded-full bg-zinc-700 radix-orientation-horizontal:h-1">
+          <Slider.Range className="absolute h-full rounded-full bg-primary-100" />
         </Slider.Track>
         <Slider.Thumb className=" block h-4 w-4 cursor-grab rounded-full bg-zinc-50 shadow-md focus:cursor-grabbing " />
         <Slider.Thumb className=" block h-4 w-4 cursor-grab rounded-full bg-zinc-50 focus:cursor-grabbing   " />

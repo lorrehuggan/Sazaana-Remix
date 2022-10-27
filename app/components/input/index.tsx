@@ -2,12 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Button from "../ui/Button";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import {
-  Form,
-  useActionData,
-  useFetcher,
-  useTransition,
-} from "@remix-run/react";
+import { Form, useActionData, useTransition } from "@remix-run/react";
 import DropDown from "../dropdown";
 
 type ActionData = {
@@ -46,7 +41,7 @@ const Input: React.FC<Props> = ({ action }) => {
           aria-label="Enter an artist name"
           type="text"
           name="artist"
-          className=" flex-1 bg-zinc-900 focus:outline-none"
+          className=" flex-1 bg-base-100 focus:outline-none"
           placeholder="Search Artist"
         />
         <Button
@@ -60,7 +55,7 @@ const Input: React.FC<Props> = ({ action }) => {
         </Button>
       </Form>
       {data?.error && (
-        <div className="mt-2 flex items-center gap-1 text-sm text-amber-500">
+        <div className="mt-2 flex items-center gap-1 text-sm text-accent-100">
           <ExclamationCircleIcon className="h-5 w-5" />
           <p>{data.error.artist}</p>
         </div>

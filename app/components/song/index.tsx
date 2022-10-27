@@ -29,13 +29,13 @@ const SongDetails: React.FC<Props> = ({ song }) => {
   return (
     <div className="flex w-full flex-col justify-end overflow-x-hidden border-b border-zinc-800 pb-1">
       <a href={song.external_urls.spotify}>
-        <p className="truncate font-bold hover:text-emerald-300">{song.name}</p>
+        <p className="truncate font-bold hover:text-primary-100">{song.name}</p>
       </a>
       <div className="flex overflow-hidden truncate ">
         {song.artists.slice(0, 20).map((artist, i) => {
           return (
             <Link key={i} to={`/search/${artist.id}`}>
-              <span className="mr-1 cursor-pointer truncate text-clip text-sm hover:text-amber-400">
+              <span className="mr-1 cursor-pointer truncate text-clip text-sm hover:text-secondary-100">
                 {i < song.artists.length - 1 ? artist.name + ", " : artist.name}
               </span>
             </Link>
@@ -104,7 +104,7 @@ const SongPreview: React.FC<Props> = ({ song }) => {
         className="h-[1px] w-full overflow-hidden rounded bg-zinc-800"
       >
         <Progress.Indicator
-          className="h-full w-full bg-emerald-500 ease-out"
+          className="h-full w-full bg-primary-100 ease-out"
           style={{ transform: `translateX(-${100 - playPosition}%)` }}
         />
       </Progress.Root>

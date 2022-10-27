@@ -5,7 +5,7 @@ interface Props {
 }
 const DropDown: React.FC<Props> = ({ artists }) => {
   return (
-    <ul className=" max-h-72 w-full space-y-4 overflow-y-scroll rounded-b-lg bg-zinc-800 p-2">
+    <ul className=" max-h-72 w-full space-y-4 overflow-y-scroll rounded-b-lg bg-base-200 p-2">
       {artists?.map((artist) => (
         <li
           key={artist.id}
@@ -17,7 +17,7 @@ const DropDown: React.FC<Props> = ({ artists }) => {
             className="h-10 w-10 rounded object-cover"
           />
           <Link
-            className="text-sm font-bold transition-colors duration-200  ease-in-out hover:text-emerald-400"
+            className="text-sm font-bold transition-colors duration-200  ease-in-out hover:text-primary-100"
             to={`${artist.id}`}
           >
             {artist.name}

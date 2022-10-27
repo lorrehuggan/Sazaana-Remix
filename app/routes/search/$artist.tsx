@@ -1,4 +1,4 @@
-import type { LoaderFunction, TypedResponse } from "@remix-run/node";
+import { LoaderFunction, redirect, TypedResponse } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { spotifyApi } from "~/utils/spotify";
@@ -9,6 +9,7 @@ import OriginalQuery from "~/components/originalQuery";
 import Filter from "~/components/filter";
 import useTracklistStore from "~/utils/appStore/trackListStore";
 import { useEffect, useRef } from "react";
+import Login from "~/components/login";
 
 export interface LoaderData {
   success: boolean;
@@ -138,7 +139,10 @@ export default function Index() {
         {error && <p className="text-sm text-amber-500">{error}</p>}
         {data?.originalQuery && <OriginalQuery data={data} />}
         <div className=" md:flex md:gap-4">
-          <Filter />
+          <div className="mb-6">
+            <Filter />
+            <Login id={data?.originalQuery.id} />
+          </div>
           <div className="flex-1 space-y-4">
             {tracklist &&
               tracklist

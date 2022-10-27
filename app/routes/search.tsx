@@ -3,11 +3,21 @@ import Input from "~/components/input";
 import Heading from "~/components/heading";
 import Nav from "~/components/navigation";
 import { json } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
 import type { MetaFunction, ActionFunction } from "@remix-run/node";
 import { spotifyApi } from "~/utils/spotify";
 import { searchSchema } from "../utils/formValidation";
 import { ZodError } from "zod";
-import { Outlet } from "@remix-run/react";
+import {
+  Outlet,
+  useLocation,
+  useParams,
+  useNavigate,
+  useFetcher,
+  useLoaderData,
+} from "@remix-run/react";
+import { useEffect } from "react";
+import useUserStore from "~/utils/appStore/userStore";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -65,11 +75,16 @@ export const action: ActionFunction = async ({ request }) => {
         error: error.flatten().fieldErrors,
       });
     }
-    return json({ data: null, error: 'Oops looks like something went wrong', status: 500 });
+    return json({
+      data: null,
+      error: "Oops looks like something went wrong",
+      status: 500,
+    });
   }
 };
 
 export default function Index() {
+  const x = useLoaderData();
   return (
     <>
       <Nav />
@@ -77,6 +92,7 @@ export default function Index() {
         <Heading />
         <Input />
         <Outlet />
+        {x && <p>{JSON.stringify(x, null, 2)}</p>}
       </main>
       <Footer />
     </>
