@@ -15,4 +15,4 @@ User's can use our filtering algorhythm to refine the curated playlist and save 
 
 ## Feedback
 
-If you have any feedback, please reach out to us at lorre.huggan@rotonmail.com
+If you have any feedback, please reach out to us at lorre.huggan@protonmail.com
