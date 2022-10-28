@@ -1,6 +1,6 @@
-import { LoaderFunction, redirect, TypedResponse } from "@remix-run/node";
+import type { LoaderFunction, TypedResponse } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import { spotifyApi } from "~/utils/spotify";
 import { intToString, randomizeArray } from "~/utils";
 import Song from "~/components/song";
@@ -124,6 +124,24 @@ export default function Index() {
   const { setTracklist, tracklist, maxNumOfTracks, setShadowTracklist } =
     useTracklistStore((state) => state);
 
+  const fetcher = useFetcher();
+
+  useEffect(() => {
+    if (localStorage.getItem("access_token")) {
+      const access_token = localStorage.getItem("access_token");
+
+      if (fetcher.type === "init") {
+        fetcher.submit(
+          { access_token: access_token! },
+          {
+            method: "post",
+            action: "/user",
+          }
+        );
+      }
+    }
+  }, [fetcher]);
+
   useEffect(() => {
     if (data?.relatedItems) {
       setTracklist(data.relatedItems);
@@ -138,6 +156,7 @@ export default function Index() {
       <section className="py-6">
         {error && <p className="text-sm text-amber-500">{error}</p>}
         {data?.originalQuery && <OriginalQuery data={data} />}
+        {fetcher.data && <p>{JSON.stringify(fetcher.data.data)}</p>}
         <div className=" md:flex md:gap-4">
           <div className="mb-6">
             <Filter />

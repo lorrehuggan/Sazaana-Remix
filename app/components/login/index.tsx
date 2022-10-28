@@ -5,7 +5,7 @@ interface Props {
   id?: string;
 }
 
-const DEV_URL = "http://localhost:3000/search/user";
+export const DEV_URL = "http://localhost:3000/search/user";
 
 const Login: React.FC<Props> = ({ id }) => {
   return (
