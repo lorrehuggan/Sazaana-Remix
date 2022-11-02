@@ -1,12 +1,13 @@
-import type { LoaderFunction, TypedResponse } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
-import { useEffect, useState } from "react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useEffect } from "react";
+import useUserStore from "~/utils/appStore/userStore";
 import { spotifyApi } from "~/utils/spotify";
 
 export interface UserData {
   user: SpotifyApi.CurrentUsersProfileResponse;
-  userTopArtist: SpotifyApi.UsersTopArtistsResponse;
+  userTopArtists: SpotifyApi.UsersTopArtistsResponse;
   refresh_token: string;
   access_token: string;
   expires_in: number;
@@ -18,11 +19,11 @@ export interface LoaderData {
   data: UserData | null;
 }
 
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<TypedResponse<LoaderData>> => {
+export const loader: LoaderFunction = async ({ request }) => {
   const { url } = request;
   const code = url.split("=")[1];
+
+  console.log({ code });
 
   if (!code) {
     return json({ success: false, data: null, error: "No code found" });
@@ -30,7 +31,6 @@ export const loader: LoaderFunction = async ({
 
   spotifyApi.setRedirectURI("http://localhost:3000/search/user");
 
-  console.log({ auth: code });
   try {
     const auth = await spotifyApi.authorizationCodeGrant(code);
     if (auth.statusCode !== 200) {
@@ -53,41 +53,42 @@ export const loader: LoaderFunction = async ({
       },
       error: null,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.log({ error });
 
     return json({ success: false, error });
   }
 };
 
+function setLocalStorage(
+  access_token: string,
+  expires_in: number,
+  refresh_token: string
+) {
+  localStorage.setItem("access_token", access_token);
+  localStorage.setItem("refresh_token", refresh_token);
+  localStorage.setItem("expires_in", String(expires_in));
+}
+
 const User: React.FC = () => {
-  const fetcher = useFetcher();
+  const { data, success, error } = useLoaderData<LoaderData>();
+  const navigate = useNavigate();
+  const { setAccessToken, setRefreshToken, setExpiresIn } = useUserStore();
 
   useEffect(() => {
-    if (localStorage.getItem("access_token")) {
-      const access_token = localStorage.getItem("access_token");
-
-      if (fetcher.type === "init") {
-        fetcher.submit(
-          { access_token: access_token! },
-          {
-            method: "post",
-            action: "/user",
-          }
-        );
-      }
+    if (data) {
+      setLocalStorage(data.access_token, data.expires_in, data.refresh_token);
+      setAccessToken(data.access_token);
+      setRefreshToken(data.refresh_token);
+      setExpiresIn(data.expires_in);
+      navigate(`/search/${data.userTopArtists.items[0].id}`);
     }
-  }, [fetcher]);
+    if (error) {
+      navigate("/search");
+    }
+  }, [navigate, data, error, setAccessToken, setRefreshToken, setExpiresIn]);
 
-  return (
-    <div>
-      {fetcher.state === ("loading" || "submitting") && <p>Loading...</p>}
-      {fetcher.data &&
-        fetcher.data.data.userTopArtists.items.map((artist: any) => {
-          return <div key={artist.id}>{artist.name}</div>;
-        })}
-    </div>
-  );
+  return <div>Loading...</div>;
 };
 
 export default User;

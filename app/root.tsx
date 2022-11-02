@@ -32,7 +32,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="mx-auto w-[90%]">
+      <body className="mx-auto w-[90%]  2xl:w-[1280px]">
         <Outlet />
         <ScrollRestoration />
         <Scripts />

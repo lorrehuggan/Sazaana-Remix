@@ -9,9 +9,13 @@ interface UserStore {
   setUser: (user: SpotifyApi.CurrentUsersProfileResponse) => void;
   userFavorites: SpotifyApi.UsersTopArtistsResponse | null;
   setUserFavorites: (userFavorites: SpotifyApi.UsersTopArtistsResponse) => void;
+  setExpiresIn: (expiresIn: number) => void;
+  expiresIn: number;
 }
 
 const useUserStore = zustand<UserStore>((set) => ({
+  setExpiresIn: (expiresIn) => set({ expiresIn }),
+  expiresIn: 0,
   accessToken: "",
   setAccessToken: (accessToken) => set({ accessToken }),
   refreshToken: "",

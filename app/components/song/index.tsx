@@ -68,6 +68,8 @@ const SongPreview: React.FC<Props> = ({ song }) => {
     autoplay: false,
     loop: false,
     volume: 0.5,
+
+    onload: () => {},
     onplay: () => {
       setLocalPlaying(true);
       setGlobalPlaying(true);

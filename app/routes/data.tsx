@@ -1,21 +1,8 @@
-import Footer from "~/components/footer";
-import Input from "~/components/input";
-import Heading from "~/components/heading";
-import Nav from "~/components/navigation";
+import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import type { MetaFunction, ActionFunction } from "@remix-run/node";
-import { spotifyApi } from "~/utils/spotify";
-import { searchSchema } from "../utils/formValidation";
 import { ZodError } from "zod";
-import { Outlet } from "@remix-run/react";
-import useUserStore from "~/utils/appStore/userStore";
-import User from "~/components/user";
-
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "Sazaana",
-  viewport: "width=device-width,initial-scale=1",
-});
+import { searchSchema } from "~/utils/formValidation";
+import { spotifyApi } from "~/utils/spotify";
 
 export const action: ActionFunction = async ({ request }) => {
   let artistIDs: string[] = [];
@@ -74,17 +61,3 @@ export const action: ActionFunction = async ({ request }) => {
     });
   }
 };
-
-export default function Index() {
-  return (
-    <>
-      <Nav />
-      <main className="min-h-[calc(100vh-6.5rem)]">
-        <Heading />
-        <Input />
-        <Outlet />
-      </main>
-      <Footer />
-    </>
-  );
-}
