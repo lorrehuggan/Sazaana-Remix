@@ -81,7 +81,7 @@ const User: React.FC = () => {
       setAccessToken(data.access_token);
       setRefreshToken(data.refresh_token);
       setExpiresIn(data.expires_in);
-      navigate(`/search/${data.userTopArtists.items[0].id}`);
+      navigate(`/search`);
     }
     if (error) {
       navigate("/search");

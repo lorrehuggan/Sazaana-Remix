@@ -1,26 +1,23 @@
-import type { ActionFunction, TypedResponse } from '@remix-run/node'
-import { json } from '@remix-run/node'
 import { useFetcher } from '@remix-run/react'
+import { fetchData } from '@remix-run/react/dist/data'
 import React, { useEffect } from 'react'
-import User from '~/components/user'
-import type { UserActionData } from '~/routes/user'
 import useUserStore from '~/utils/appStore/userStore'
-import { spotifyApi } from '~/utils/spotify'
+import { UserActionData } from '../user'
 
-const TopArtist: React.FC = () => {
+const Index = () => {
   const { submit, data: fetcherData, type } = useFetcher<UserActionData>()
   const {
-    userFavorites,
-    setUserFavorites,
     setUser,
-    setAccessToken,
     setExpiresIn,
+    setAccessToken,
     setRefreshToken,
+    setUserFavorites,
   } = useUserStore()
+
   useEffect(() => {
     if (fetcherData?.data) {
-      setUser(fetcherData.data.user)
       setUserFavorites(fetcherData.data.userTopArtists)
+      
       return
     }
 
@@ -49,9 +46,11 @@ const TopArtist: React.FC = () => {
     )
   }, [fetcherData, submit, type])
 
-  return (
-    <>{fetcherData && <User artists={fetcherData.data.userTopArtists} />}</>
-  )
+  if (fetcherData?.data) {
+    return <div>{fetcherData.data.user.email}</div>
+  }
+
+  return <div>Hello</div>
 }
 
-export default TopArtist
+export default Index
